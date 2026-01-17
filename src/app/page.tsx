@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
+import { AuthGate } from '@/components/AuthGate';
 import { ChatContainer } from '@/components/chat';
 import { StatsPanel, MobileStats } from '@/components/stats';
 import { getStorageData, updateStreak } from '@/lib/storage';
@@ -42,26 +43,28 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col h-screen bg-background">
-      <Header />
+    <AuthGate>
+      <main className="flex flex-col h-screen bg-background">
+        <Header />
 
-      {/* Mobile stats bar */}
-      <div className="md:hidden">
-        <MobileStats messages={messages} streak={streak} />
-      </div>
-
-      {/* Main content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Chat area */}
-        <div className="flex-1 flex flex-col min-w-0">
-          <ChatContainer onMessageSent={handleMessageSent} />
+        {/* Mobile stats bar */}
+        <div className="md:hidden">
+          <MobileStats messages={messages} streak={streak} />
         </div>
 
-        {/* Desktop stats panel */}
-        <aside className="hidden md:block w-72 lg:w-80 border-l border-border p-4 overflow-y-auto bg-background">
-          <StatsPanel messages={messages} streak={streak} />
-        </aside>
-      </div>
-    </main>
+        {/* Main content */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* Chat area */}
+          <div className="flex-1 flex flex-col min-w-0">
+            <ChatContainer onMessageSent={handleMessageSent} />
+          </div>
+
+          {/* Desktop stats panel */}
+          <aside className="hidden md:block w-72 lg:w-80 border-l border-border p-4 overflow-y-auto bg-background">
+            <StatsPanel messages={messages} streak={streak} />
+          </aside>
+        </div>
+      </main>
+    </AuthGate>
   );
 }
